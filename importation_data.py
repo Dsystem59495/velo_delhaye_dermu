@@ -86,7 +86,7 @@ def vlille_insert(data):
 ########################################################################################################################
 
 def get_vrennes():
-    url = "https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=etat-des-stations-le-velo-star-en-temps-reel&q=&facet=nom&facet=etat&facet=nombreemplacementsactuels&facet=nombreemplacementsdisponibles&facet=nombrevelosdisponibles"
+    url = "https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=etat-des-stations-le-velo-star-en-temps-reel&q=&rows=55&facet=nom&facet=etat&facet=nombreemplacementsactuels&facet=nombreemplacementsdisponibles&facet=nombrevelosdisponibles"
     response = requests.request("GET", url)
     response_json = json.loads(response.text.encode('utf8'))
     return response_json.get("records", [])
@@ -148,7 +148,7 @@ def vrennes_insert(data):
 ########################################################################################################################
 
 def get_vparis():
-    url = "https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-disponibilite-en-temps-reel&q=&facet=name&facet=is_installed&facet=is_renting&facet=is_returning&facet=nom_arrondissement_communes"
+    url = "https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-disponibilite-en-temps-reel&q=&rows=1398&facet=name&facet=is_installed&facet=is_renting&facet=is_returning&facet=nom_arrondissement_communes"
     response = requests.request("GET", url)
     response_json = json.loads(response.text.encode('utf8'))
     return response_json.get("records", [])
