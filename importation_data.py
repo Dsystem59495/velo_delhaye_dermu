@@ -29,7 +29,7 @@ def get_vparis():
     return response_json.get("records", [])
 
 def get_vlyon():
-    url = "https://download.data.grandlyon.com/ws/rdata/jcd_jcdecaux.jcdvelov/all.json?maxfeatures=100&start=1"
+    url = "https://public.opendatasoft.com/api/records/1.0/search/?dataset=station-velov-grand-lyon&q=&rows=2000&facet=last_upd_1"
     response = requests.request("GET", url)
     response_json = json.loads(response.text.encode('utf8'))
     return response_json.get("records", [])
@@ -47,9 +47,9 @@ def test_import():
     print("\n")
     print("Rennes : ")
     print(get_vrennes())
-    #print("\n")
-    #print("Lyon : ")
-    #print(get_vlyon())
+    print("\n")
+    print("Lyon : ")
+    print(get_vlyon())
     print("\n")
     print("Paris : ")
     print(get_vparis())
