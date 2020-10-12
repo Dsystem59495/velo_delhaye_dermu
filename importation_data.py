@@ -14,7 +14,13 @@ def get_vlille():
     url = "https://opendata.lillemetropole.fr/api/records/1.0/search/?dataset=vlille-realtime&q=&rows=3000&facet=libelle&facet=nom&facet=commune&facet=etat&facet=type&facet=etatconnexion"
     response = requests.request("GET", url)
     response_json = json.loads(response.text.encode('utf8'))     # Transforme notre fichier JSON en liste de dictionnaires
-    return response_json.get("records", [])   # On récupére uniquement les données
+    records = response_json.get("records", [])   # On récupére uniquement les données
+    for element in records :
+        element['fields'].pop('commune', None)
+        element['fields'].pop('adresse', None)
+        element['fields'].pop('localisation', None)
+        element['fields']['TPE'] = element['fields'].pop('type', None)
+    return records
 
 def get_vrennes():
     url = "https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=etat-des-stations-le-velo-star-en-temps-reel&q=&facet=nom&facet=etat&facet=nombreemplacementsactuels&facet=nombreemplacementsdisponibles&facet=nombrevelosdisponibles"
@@ -55,7 +61,7 @@ def test_import():
     print(get_vparis())
     return None
 
-# test_import()
+test_import()
 
 '''
 Affichage plus propre de notre fichier JSON
@@ -69,8 +75,8 @@ def affichage(json_file):
 
 # affichage(get_vlille())
 
-def affichage_element(indice_élément, json_file):
-    vlille_element = json_file[indice_élément]   # .get('recordid') # servira pour distinguer les différentes sauvegardes
+def affichage_element(indice_element, json_file):
+    vlille_element = json_file[indice_element].get('recordid') # servira pour distinguer les différentes sauvegardes
     print("affichage_element : ")
     print(vlille_element)
 
