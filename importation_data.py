@@ -4,6 +4,8 @@ Bibliothèques à importer (les installations nécessaires au projet sont spéci
 
 import requests
 import json
+import pymongo
+# import dns
 
 '''
 Importation des différentes données utilisées au cours du projet. Autrement dit, c'est ici que sont chargées les données
@@ -41,11 +43,12 @@ def get_vlyon():
     return response_json.get("records", [])
 
 '''
-Tests pour vérifier que les nouvelles données sont belles et bien chargées
-
-NB : Il semblerait que les données ne se chargent pas. En effet, lorsque l'on cherche à afficher les données qui 
-viennent d'être chargées, l'affichage nous renvoie : []
+Tests pour vérifier que les nouvelles données sont belles et bien chargées 
 '''
+
+###########
+#   OK    #
+###########
 
 def test_import():
     print("Lille : ")
@@ -60,8 +63,7 @@ def test_import():
     print("Paris : ")
     print(get_vparis())
     return None
-
-test_import()
+# test_import()
 
 '''
 Affichage plus propre de notre fichier JSON
@@ -75,9 +77,3 @@ def affichage(json_file):
 
 # affichage(get_vlille())
 
-def affichage_element(indice_element, json_file):
-    vlille_element = json_file[indice_element].get('recordid') # servira pour distinguer les différentes sauvegardes
-    print("affichage_element : ")
-    print(vlille_element)
-
-affichage_element(0, get_vlille())
