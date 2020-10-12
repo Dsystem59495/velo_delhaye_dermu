@@ -13,8 +13,8 @@ des vélos en libre accès pour les villes de Lille, Lyon, Rennes et Paris
 def get_vlille():
     url = "https://opendata.lillemetropole.fr/api/records/1.0/search/?dataset=vlille-realtime&q=&rows=3000&facet=libelle&facet=nom&facet=commune&facet=etat&facet=type&facet=etatconnexion"
     response = requests.request("GET", url)
-    response_json = json.loads(response.text.encode('utf8'))
-    return response_json.get("records", [])
+    response_json = json.loads(response.text.encode('utf8'))     # Transforme notre fichier JSON en liste de dictionnaires
+    return response_json.get("records", [])   # On récupére uniquement les données
 
 def get_vrennes():
     url = "https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=etat-des-stations-le-velo-star-en-temps-reel&q=&facet=nom&facet=etat&facet=nombreemplacementsactuels&facet=nombreemplacementsdisponibles&facet=nombrevelosdisponibles"
@@ -42,18 +42,36 @@ viennent d'être chargées, l'affichage nous renvoie : []
 '''
 
 def test_import():
-    print("Lille : /n")
+    print("Lille : ")
     print(get_vlille())
     print("\n")
-    print("Rennes : /n")
+    print("Rennes : ")
     print(get_vrennes())
     #print("\n")
-    #print("Lyon : /n")
+    #print("Lyon : ")
     #print(get_vlyon())
     print("\n")
-    print("Paris : /n")
+    print("Paris : ")
     print(get_vparis())
-    print("\n")
+    return None
 
-test_import()
+# test_import()
 
+'''
+Affichage plus propre de notre fichier JSON
+'''
+
+def affichage(json_file):
+    vlille = json.dumps(json_file, indent = 4, separators=(", ", " : ")) # indente les différents éléments pour que le fichier soit plus visible
+    print("affichage :")
+    print(vlille)
+    return None
+
+# affichage(get_vlille())
+
+def affichage_element(indice_élément, json_file):
+    vlille_element = json_file[indice_élément]   # .get('recordid') # servira pour distinguer les différentes sauvegardes
+    print("affichage_element : ")
+    print(vlille_element)
+
+affichage_element(0, get_vlille())
