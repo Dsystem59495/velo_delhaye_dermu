@@ -1,5 +1,5 @@
 '''
-Bibliothèques à importer (les installations nécessaires au projet sont spécifiées dans le fichier texte installation.txt)
+Bibliothèques à importer (les installations nécessaires au projet sont spécifiées dans le fichier texte requirements.txt)
 '''
 
 import requests
@@ -77,7 +77,7 @@ def vlille_insert(data):
     ]
     atlas = MongoClient(
         'mongodb+srv://delhayedermu:delhayedermu@projectnosql.gtcde.gcp.mongodb.net/velo?retryWrites=true&w=majority')
-    db = atlas.velo.velo_lille.insert_many(vlille_to_insert)
+    atlas.velo.velo_lille.insert_many(vlille_to_insert)
     print("!!!!!!!!!! IMPORTATION Lille DONE !!!!!!!!!!")
     return None
 
@@ -139,7 +139,7 @@ def vrennes_insert(data):
     ]
     atlas = MongoClient(
         'mongodb+srv://delhayedermu:delhayedermu@projectnosql.gtcde.gcp.mongodb.net/velo?retryWrites=true&w=majority')
-    db = atlas.velo.velo_rennes.insert_many(vrennes_to_insert)
+    atlas.velo.velo_rennes.insert_many(vrennes_to_insert)
     print("!!!!!!!!!! IMPORTATION Rennes DONE !!!!!!!!!!")
     return None
 
@@ -206,7 +206,7 @@ def vparis_insert(data):
     ]
     atlas = MongoClient(
         'mongodb+srv://delhayedermu:delhayedermu@projectnosql.gtcde.gcp.mongodb.net/velo?retryWrites=true&w=majority')
-    db = atlas.velo.velo_paris.insert_many(vparis_to_insert)
+    atlas.velo.velo_paris.insert_many(vparis_to_insert)
     print("!!!!!!!!!! IMPORTATION Paris DONE !!!!!!!!!!")
     return None
 
@@ -286,7 +286,7 @@ def vlyon_insert(data):
     ]
     atlas = MongoClient(
         'mongodb+srv://delhayedermu:delhayedermu@projectnosql.gtcde.gcp.mongodb.net/velo?retryWrites=true&w=majority')
-    db = atlas.velo.velo_lyon.insert_many(vlyon_to_insert)
+    atlas.velo.velo_lyon.insert_many(vlyon_to_insert)
     print("!!!!!!!!!! IMPORTATION Lyon DONE !!!!!!!!!!")
     return None
 

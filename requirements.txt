@@ -1,6 +1,6 @@
-# Immportation des datas 
-- requests
-- json
-- pymongo
-- dns
+requests
+json
+pymongo
+dns
+dateutil
 
