@@ -10,7 +10,7 @@ Le second doit effectuer des mises à jour de ces différentes données et les s
 Le troisième doit donner les stations disponibles à proximité d'un utilisateur (en fonction de sa position : longtitude et latitude) en utilisant les données mises à jour. 
 Enfin, effectuer les dernières instructions suivantes :
 	- trouver une station grâce à son nom (enfin quelques lettres de celui-ci)
-	- mettre à joiur une station
+	- mettre à jour une station
 	- supprimer une station et ses données
 	- désactiver toutes les stations dans un espace donné
 	- donner toutes les stations avec un ratio vélo/total emplacement inférieur à 20% entre 18h et 19h (entre lundi et vendredi).
