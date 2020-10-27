@@ -7,6 +7,8 @@ import dateutil.parser
 import requests
 from pymongo import MongoClient
 
+# Connexion au serveur MongoDB
+
 ATLAS = MongoClient(
         'mongodb+srv://delhayedermu:delhayedermu@projectnosql.gtcde.gcp.mongodb.net/velo?retryWrites=true&w=majority')
 DB = ATLAS.velo
@@ -16,18 +18,6 @@ class SaisieUtilisateur():
         self.long = long
         self.lat = lat
         self.rayon = rayon
-
-'''
-Interface utilisateur
-'''
-
-def saisie_coordonnees_utilisateur():
-    print("\nBonjour ! Veuillez saisir vos coordonnées :")
-    longitude = float(input("Saissisez la longitude (Ouest-Est) : "))
-    latitude = float(input("Saissisez la latitude (Nord-Sud) : "))
-    distance_max = float(input("Saissisez le rayon de recherche en mètres : "))
-    utilisateur = SaisieUtilisateur(longitude, latitude, distance_max)
-    return utilisateur
 
 '''
 Chargement des dernières données
@@ -51,7 +41,7 @@ def update_vlille():
             "bike_available": elem.get('fields', {}).get('nbvelosdispo'),
             "stand_available": elem.get('fields', {}).get('nbplacesdispo'),
             "date": dateutil.parser.parse(elem.get('fields', {}).get('datemiseajour')),
-            "station_id": get_station_id(elem.get('fields', {}).get('libelle'),DB)
+            "station_id": get_station_id(elem.get('fields', {}).get('libelle'), DB)
         }
         for elem in vlille
     ]
@@ -59,6 +49,18 @@ def update_vlille():
         DB.data_velo_lille.insert_many(newdata, ordered=False)
     except:
         pass
+
+'''
+Interface utilisateur
+'''
+
+def saisie_coordonnees_utilisateur():
+    print("\nBonjour ! Veuillez saisir vos coordonnées :")
+    longitude = float(input("Saissisez la longitude (Ouest-Est) : "))
+    latitude = float(input("Saissisez la latitude (Nord-Sud) : "))
+    distance_max = float(input("Saissisez le rayon de recherche en mètres : "))
+    utilisateur = SaisieUtilisateur(longitude, latitude, distance_max)
+    return utilisateur
 
 '''
 Renvoie l'ensemble des stations les plus proches de l'utilisateur en fonction de sa saisie
@@ -91,11 +93,11 @@ Prépare l'affichage des informations pour l'utilisateur
 
 def infos_stations_proches(listes_stations):
     listes_infos_stations = []
-    for doc in listes_stations:
+    for station in listes_stations:
         infos_stations = dict()
-        infos_stations['station_id'] = doc.get('_id')
-        infos_stations['name'] = doc.get('name')
-        infos_stations['distance'] = doc.get('distance')
+        infos_stations['station_id'] = station.get('_id')
+        infos_stations['name'] = station.get('name')
+        infos_stations['distance'] = station.get('distance')
         listes_infos_stations.append(infos_stations)
     return listes_infos_stations
 
