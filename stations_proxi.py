@@ -1,7 +1,7 @@
 '''
 Bibliothèques à importer (les installations nécessaires au projet sont spécifiées dans le fichier texte requirements.txt)
 '''
-import json
+import json5
 
 import dateutil.parser
 import requests
@@ -35,7 +35,7 @@ Chargement des dernières données
 def get_vlille():
     url = "https://opendata.lillemetropole.fr/api/records/1.0/search/?dataset=vlille-realtime&q=&rows=3000&facet=libelle&facet=nom&facet=commune&facet=etat&facet=type&facet=etatconnexion"
     response = requests.request("GET", url) # récupère l'ensemble des données fournies par l'API associée au lien url
-    response_json = json.loads(response.text.encode('utf8'))     # Transforme notre fichier JSON en liste de dictionnaires
+    response_json = json5.loads(response.text.encode('utf8'))     # Transforme notre fichier JSON en liste de dictionnaires
     return response_json.get("records", [])   # On récupére uniquement les données
 
 def get_station_id(id_ext, database):
@@ -113,6 +113,7 @@ def saisie_infos_stations(listes_infos_stations):
               str(infos_stations.get('bike_available')) + " vélo(s) disponibles et "
               + str(infos_stations.get('stand_available')) + " stand(s) de disponibles le "
               + str(infos_stations.get('date').strftime('%d/%m/%Y')) + " à " + str(infos_stations.get('date').strftime('%T')) + " ).\n")
+
 '''
 Exécution code
 '''

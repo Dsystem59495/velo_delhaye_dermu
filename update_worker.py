@@ -3,9 +3,9 @@ Bibliothèques à importer (les installations nécessaires au projet sont spéci
 '''
 
 import requests
-import json
-from pymongo import MongoClient
 import time
+import json5
+from pymongo import MongoClient
 import dateutil.parser   # Ce module renvoye un objet datetime même pour les formats de dates ambiguës.
 
 '''
@@ -20,7 +20,7 @@ des stations vlille "infiniment". La requête de mises à jour des données s'ef
 def get_vlille():
     url = "https://opendata.lillemetropole.fr/api/records/1.0/search/?dataset=vlille-realtime&q=&rows=3000&facet=libelle&facet=nom&facet=commune&facet=etat&facet=type&facet=etatconnexion"
     response = requests.request("GET", url) # récupère l'ensemble des données fournies par l'API associée au lien url
-    response_json = json.loads(response.text.encode('utf8'))     # Transforme notre fichier JSON en liste de dictionnaires
+    response_json = json5.loads(response.text.encode('utf8'))     # Transforme notre fichier JSON en liste de dictionnaires
     return response_json.get("records", [])   # On récupére uniquement les données
 
 ########################################################################################################################

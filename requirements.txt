@@ -1,6 +1,8 @@
 requests
-json
+json5
 pymongo
-dns
+dnspython
 dateutil
+time
+
 

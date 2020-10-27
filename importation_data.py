@@ -3,7 +3,7 @@ Bibliothèques à importer (les installations nécessaires au projet sont spéci
 '''
 
 import requests
-import json
+import json5
 from pymongo import MongoClient
 
 '''
@@ -18,12 +18,12 @@ des vélos en libre accès pour les villes de Lille, Lyon, Rennes et Paris
 def get_vlille():
     url = "https://opendata.lillemetropole.fr/api/records/1.0/search/?dataset=vlille-realtime&q=&rows=3000&facet=libelle&facet=nom&facet=commune&facet=etat&facet=type&facet=etatconnexion"
     response = requests.request("GET", url) # récupère l'ensemble des données fournies par l'API associée au lien url
-    response_json = json.loads(response.text.encode('utf8'))     # Transforme notre fichier JSON en liste de dictionnaires
+    response_json = json5.loads(response.text.encode('utf8'))     # Transforme notre fichier JSON en liste de dictionnaires
     return response_json.get("records", [])   # On récupére uniquement les données
 
 velo_lille = get_vlille()
 
-# print(json.dumps(velo_lille[0], indent=4, separators=(", ", " : ")))  # indente les différents éléments pour que le fichier soit plus visible et affiche le premier élément chargé
+# print(json5.dumps(velo_lille[0], indent=4, separators=(", ", " : ")))  # indente les différents éléments pour que le fichier soit plus visible et affiche le premier élément chargé
 
 """
 Voici à quoi ressemble une donnée associée à une station velo de Lille :
@@ -88,12 +88,12 @@ def vlille_insert(data):
 def get_vrennes():
     url = "https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=etat-des-stations-le-velo-star-en-temps-reel&q=&rows=55&facet=nom&facet=etat&facet=nombreemplacementsactuels&facet=nombreemplacementsdisponibles&facet=nombrevelosdisponibles"
     response = requests.request("GET", url)
-    response_json = json.loads(response.text.encode('utf8'))
+    response_json = json5.loads(response.text.encode('utf8'))
     return response_json.get("records", [])
 
 velo_rennes = get_vrennes()
 
-# print(json.dumps(velo_rennes[0], indent=4, separators=(", ", " : ")))
+# print(json5.dumps(velo_rennes[0], indent=4, separators=(", ", " : ")))
 
 """
 Voici à quoi ressemble une donnée associée à une station velo de Rennes :
@@ -150,12 +150,12 @@ def vrennes_insert(data):
 def get_vparis():
     url = "https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-disponibilite-en-temps-reel&q=&rows=1398&facet=name&facet=is_installed&facet=is_renting&facet=is_returning&facet=nom_arrondissement_communes"
     response = requests.request("GET", url)
-    response_json = json.loads(response.text.encode('utf8'))
+    response_json = json5.loads(response.text.encode('utf8'))
     return response_json.get("records", [])
 
 velo_paris = get_vparis()
 
-# print(json.dumps(velo_paris[0], indent=4, separators=(", ", " : ")))
+# print(json5.dumps(velo_paris[0], indent=4, separators=(", ", " : ")))
 
 """
 Voici à quoi ressemble une donnée associée à une station velo de Paris :
@@ -217,12 +217,12 @@ def vparis_insert(data):
 def get_vlyon():
     url = "https://public.opendatasoft.com/api/records/1.0/search/?dataset=station-velov-grand-lyon&q=&rows=2000&facet=last_upd_1"
     response = requests.request("GET", url)
-    response_json = json.loads(response.text.encode('utf8'))
+    response_json = json5.loads(response.text.encode('utf8'))
     return response_json.get("records", [])
 
 velo_lyon = get_vlyon()
 
-# print(json.dumps(velo_lyon[0], indent=4, separators=(", ", " : ")))
+# print(json5.dumps(velo_lyon[0], indent=4, separators=(", ", " : ")))
 
 """
 Voici à quoi ressemble une donnée associée à une station velo de Lyon :
