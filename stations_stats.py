@@ -4,6 +4,7 @@ Bibliothèques à importer (les installations nécessaires au projet sont spéci
 
 from pymongo import MongoClient
 
+
 # Connexion au serveur MongoDB
 
 ATLAS = MongoClient(
@@ -16,14 +17,10 @@ DB = ATLAS.velo
 def recherche_données_ratio(ratio):
     stations_sous_ratio = DB.data_velo_lille.aggregate([{
         "$project": {
-            "_id": 0,
-            "date": 1,
             "station_id": 1,
-            "size": { "$sum": ["$bike_available", "$stand_available"]},
-            "status": {
-                "bikes": "$bike_available",
-                "stands": "$stand_available"
-            },
+            "date complète": "$date",
+            "heure": {"$hour": "$date"},
+            "jour de la semaine": {"$dayOfWeek": "$date"},
             "ratio":    # Calcul du ratio pour l'ensemble des données
                 {"$cond":
                     [
@@ -43,6 +40,9 @@ def recherche_données_ratio(ratio):
                         ]}
                 }
             },
+            {"$match":
+                 {"heure": {'$eq': 16}}
+            },
             {
                 "$group": {     # On regroupe les stations par leur identifiant
                 "_id": "$station_id",
@@ -61,37 +61,7 @@ def affiche_nom_stations(stations_sous_ratio):
         print(str(infos_stations.get("name")) + " ( ratio : " + str(station.get("station_ratio")) + " )")
     return None
 
-
-def group():  # pour vérifier le nombre de stations
-    liste = DB.data_velo_lille.aggregate([{
-        "$project": {
-            "_id": 0,
-            "date": 1,
-            "station_id": 1,
-            "size": {"$sum": ["$bike_available", "$stand_available"]},
-            "status": {
-                "bikes": "$bike_available",
-                "stands": "$stand_available"
-            }
-        }
-    },
-        {
-            "$group": {  # On regroupe les stations par leur identifiant
-            "_id": "$station_id"
-            }
-        }
-    ])
-    i = 0
-    for doc in liste:
-        i = i+1
-    print(i)
-
-
-
-
-def main():
-    group()
+if __name__ == '__main__':
     stations_sous_ratio = recherche_données_ratio(0.2)
     affiche_nom_stations(stations_sous_ratio)
 
-main()
