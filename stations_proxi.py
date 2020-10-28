@@ -2,10 +2,14 @@
 Bibliothèques à importer (les installations nécessaires au projet sont spécifiées dans le fichier texte requirements.txt)
 '''
 import json5
-
 import dateutil.parser
 import requests
 from pymongo import MongoClient
+
+'''
+Chargement des dernières données
+'''
+from update_worker import update_one_vlille
 
 # Connexion au serveur MongoDB
 
@@ -20,42 +24,11 @@ class SaisieUtilisateur():
         self.rayon = rayon
 
 '''
-Chargement des dernières données
-'''
-def get_vlille():
-    url = "https://opendata.lillemetropole.fr/api/records/1.0/search/?dataset=vlille-realtime&q=&rows=3000&facet=libelle&facet=nom&facet=commune&facet=etat&facet=type&facet=etatconnexion"
-    response = requests.request("GET", url) # récupère l'ensemble des données fournies par l'API associée au lien url
-    response_json = json5.loads(response.text.encode('utf8'))     # Transforme notre fichier JSON en liste de dictionnaires
-    return response_json.get("records", [])   # On récupére uniquement les données
-
-def get_station_id(id_ext, database):
-    tps = database.velo_lille.find_one({ 'source.id_ext': id_ext }, { '_id': 1 })
-    return tps['_id']
-
-def update_vlille():
-    DB.data_velo_lille.create_index([('station_id', 1), ('date', -1)], unique=True)
-    print("\nMise à jour des données !!!\n")
-    vlille = get_vlille()
-    newdata = [
-        {
-            "bike_available": elem.get('fields', {}).get('nbvelosdispo'),
-            "stand_available": elem.get('fields', {}).get('nbplacesdispo'),
-            "date": dateutil.parser.parse(elem.get('fields', {}).get('datemiseajour')),
-            "station_id": get_station_id(elem.get('fields', {}).get('libelle'), DB)
-        }
-        for elem in vlille
-    ]
-    try:
-        DB.data_velo_lille.insert_many(newdata, ordered=False)
-    except:
-        pass
-
-'''
 Interface utilisateur
 '''
 
 def saisie_coordonnees_utilisateur():
-    print("\nBonjour ! Veuillez saisir vos coordonnées :")
+    print("\n Bonjour ! Veuillez saisir vos coordonnées :")
     longitude = float(input("Saissisez la longitude (Ouest-Est) : "))
     latitude = float(input("Saissisez la latitude (Nord-Sud) : "))
     distance_max = float(input("Saissisez le rayon de recherche en mètres : "))
@@ -120,8 +93,9 @@ def saisie_infos_stations(listes_infos_stations):
 Exécution code
 '''
 
-def main():
-    update_vlille()
+if __name__ == '__main__':
+    print("\n Mise à jour des données \n")
+    update_one_vlille()
     # 50.634306 3.048760 : ISEN LILLE
     # utilisateur = SaisieUtilisateur(3.048760, 50.634306, 300)
     # 50.61915 3.126501 : Boulevard De Valmy
@@ -130,6 +104,3 @@ def main():
     listes_stations = recherche_station_proche(utilisateur)
     listes_infos_stations = infos_stations_proches(listes_stations)
     saisie_infos_stations(listes_infos_stations)
-    return None
-
-main()

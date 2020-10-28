@@ -294,13 +294,10 @@ def vlyon_insert(data):
 Chargement des différentes données utilisées au cours du projet dans MongoDB Atlas
 '''
 
-def insert_in_atlas():
+if __name__ == '__main__':
     vlille_insert(velo_lille)
     vrennes_insert(velo_rennes)
     vparis_insert(velo_paris)
     vlyon_insert(velo_lyon)
     print("ALL IMPORTATION DONE")
-    return None
-
-insert_in_atlas()
 
