@@ -44,7 +44,7 @@ def update_one_vlille():
         {
             "bike_available": elem.get('fields', {}).get('nbvelosdispo'),
             "stand_available": elem.get('fields', {}).get('nbplacesdispo'),
-            "date": dateutil.parser.parse(elem.get('fields', {}).get('datemiseajour')),
+            "date": dateutil.parser.parse(elem.get('fields', {}).get('datemiseajour')),   # les dates sont enregistrés selon l'heure de Londres (méridien de Greenwich)
             "station_id": get_station_id(elem.get('fields', {}).get('libelle'), DB)
         }
         for elem in vlille
