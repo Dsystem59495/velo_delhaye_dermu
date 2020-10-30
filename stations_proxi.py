@@ -1,14 +1,13 @@
 '''
 Bibliothèques à importer (les installations nécessaires au projet sont spécifiées dans le fichier texte requirements.txt)
 '''
-import json5
-import dateutil.parser
-import requests
+
 from pymongo import MongoClient
 
 '''
 Chargement des dernières données
 '''
+
 from update_worker import update_one_vlille
 
 # Connexion au serveur MongoDB
@@ -29,9 +28,24 @@ Interface utilisateur
 
 def saisie_coordonnees_utilisateur():
     print("\n Bonjour ! Veuillez saisir vos coordonnées :")
-    longitude = float(input("Saissisez la longitude (Ouest-Est) : "))
-    latitude = float(input("Saissisez la latitude (Nord-Sud) : "))
-    distance_max = float(input("Saissisez le rayon de recherche en mètres : "))
+    while True:
+        try:
+            longitude = float(input("Saissisez la longitude (Ouest-Est) : "))
+            break
+        except ValueError:
+            print("Erreur de saisie : Veuillez recommencer la saisie de la longitude (Ouest-Est). ")
+    while True:
+        try:
+            latitude = float(input("Saissisez la latitude (Nord-Sud) : "))
+            break
+        except ValueError:
+            print("Erreur de saisie : Veuillez recommencer la saisie de la latitude (Nord-Sud). ")
+    while True:
+        try:
+            distance_max = float(input("Saissisez le rayon de recherche en mètres : "))
+            break
+        except ValueError:
+            print("Erreur de saisie : Veuillez recommencer la saisie de la distance. ")
     utilisateur = SaisieUtilisateur(longitude, latitude, distance_max)
     return utilisateur
 
@@ -80,14 +94,14 @@ Renvoie l'ensemble des informations d'une station située dans son périmètre
 
 def saisie_infos_stations(listes_infos_stations):
     print("\n Voici les stations proches de votre position : \n")
-
     for i in range(len(listes_infos_stations)):
         infos_stations = DB.data_velo_lille.find_one({'station_id': listes_infos_stations[i].get('station_id')})
         print(str(i + 1) + " : " + listes_infos_stations[i].get('name') + " à " + str(
             round(listes_infos_stations[i].get('distance'))) + " mètres ( "+
               str(infos_stations.get('bike_available')) + " vélo(s) disponibles et "
               + str(infos_stations.get('stand_available')) + " stand(s) de disponibles le "
-              + str(infos_stations.get('date').strftime('%d/%m/%Y')) + " à " + str(infos_stations.get('date').strftime('%T')) + " ).\n")
+              + infos_stations.get('date').strftime('%d/%m/%Y') + " à "
+              + str(int(infos_stations.get('date').strftime('%H'))+1) + infos_stations.get('date').strftime(':%M:%S'))
 
 '''
 Exécution code

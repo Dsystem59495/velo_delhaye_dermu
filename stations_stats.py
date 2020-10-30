@@ -1,7 +1,6 @@
 '''
 Bibliothèques à importer (les installations nécessaires au projet sont spécifiées dans le fichier texte requirements.txt)
 '''
-from datetime import timezone
 
 from pymongo import MongoClient
 
@@ -71,7 +70,7 @@ if __name__ == '__main__':
     heure_debut = 18
     heure_fin = 19
     ratio = 0.2
-    print("\n Affichage des stations ayant un ratio inférieur ou égal à" + str(ratio) + "entre 18h et 19h en semaine "
+    print("\n Affichage des stations ayant un ratio inférieur ou égal à " + str(ratio) + " entre 18h et 19h en semaine "
                                                                                         "(entre lundi et vendredi)")
     stations_sous_ratio = recherche_données_ratio(ratio, jour_debut, heure_debut,  jour_fin, heure_fin)
     affiche_nom_stations(stations_sous_ratio)
