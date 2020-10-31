@@ -13,7 +13,7 @@ DB = ATLAS.velo
 
 # Recherche des données sur une station pour un intervalle d'heure données
 
-def recherche_données_ratio(ratio, jour_debut, heure_debut,  jour_fin, heure_fin):
+def recherche_données_ratio(ratio, heure_debut, heure_fin):
     stations_sous_ratio = DB.data_velo_lille.aggregate([{
         "$project": {
             "station_id": 1,
@@ -43,7 +43,7 @@ def recherche_données_ratio(ratio, jour_debut, heure_debut,  jour_fin, heure_fi
                  {"heure": {'$gte': heure_debut,'$lte': heure_fin, '$ne': heure_fin}}
              },
             {"$match":
-                 {"jour de la semaine": {'$gte': jour_debut,'$lte': jour_fin}}
+                 {"jour de la semaine": {'$gte': 7}}
              },
             {
                 "$group": {     # On regroupe les stations par leur identifiant
@@ -55,23 +55,24 @@ def recherche_données_ratio(ratio, jour_debut, heure_debut,  jour_fin, heure_fi
                 {"station_ratio": {'$lte': ratio}}
             }
     ])
+    for doc in stations_sous_ratio:
+        print(doc)
     return stations_sous_ratio
 
 def affiche_nom_stations(stations_sous_ratio):
 
     for station in stations_sous_ratio:
         infos_stations = DB.velo_lille.find_one({'_id': station.get('_id')})
-        print(str(infos_stations.get("name")) + " ( ratio : " + str(station.get("station_ratio")) + " )")
+        print(infos_stations)
+        if infos_stations != None:
+            print(str(infos_stations.get("name")) + " ( ratio : " + str(station.get("station_ratio")) + " )")
     return None
 
 if __name__ == '__main__':
-    jour_debut = 0 # Correspond à Lundi
-    jour_fin = 6 # Correspond à Vendredi
-    heure_debut = 12
-    heure_fin = 13         # Les heures de notre sauvegarde sont basées selon le méridien de Greenwich
+    heure_debut = 10
+    heure_fin = 11    # Les heures de notre sauvegarde sont basées selon le méridien de Greenwich
     ratio = 0.2
-    print("\n Affichage des stations ayant un ratio inférieur ou égal à " + str(ratio) + " entre 13h et 14h en semaine "
-                                                                                        "(entre lundi et vendredi) : ")
-    stations_sous_ratio = recherche_données_ratio(ratio, jour_debut, heure_debut,  jour_fin, heure_fin)
+    print("\n Affichage des stations ayant un ratio inférieur ou égal à " + str(ratio) + " entre 11h et 12h le samedi : ")
+    stations_sous_ratio = recherche_données_ratio(ratio, heure_debut, heure_fin)
     affiche_nom_stations(stations_sous_ratio)
 

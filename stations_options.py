@@ -115,15 +115,11 @@ def saisie_infos_stations(listes_infos_stations):
         print(str(i + 1) + " : " + listes_infos_stations[i].get('name') + " ( "+
               str(infos_stations.get('bike_available')) + " vélo(s) disponibles et "
               + str(infos_stations.get('stand_available')) + " stand(s) de disponibles le "
-<<<<<<< Updated upstream
-              + str(infos_stations.get('date').strftime('%d/%m/%Y')) + " à " + str(infos_stations.get('date').strftime('%T')) + " ).\n")
-        
-    return len(listes_infos_stations)
-=======
               + str(infos_stations.get('date').strftime('%d/%m/%Y')) + " à "
               + str(int(infos_stations.get('date').strftime('%H'))+1)
               + infos_stations.get('date').strftime(':%M:%S'))
->>>>>>> Stashed changes
+        
+    return len(listes_infos_stations)
 
 '''
 Exécution code
