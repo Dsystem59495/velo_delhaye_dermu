@@ -57,6 +57,7 @@ Modifier la station
 '''
 
 def modifie_station(station):
+    DB.velo_lille.update_one({"name" : station.get('name')}, {"$set":{"tpe":False}})
     return None
 
 '''
