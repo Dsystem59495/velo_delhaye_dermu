@@ -30,7 +30,10 @@ DB = ATLAS.velo
 
 def get_station_id(id_ext, database):
     tps = database.velo_lille.find_one({'source.id_ext': id_ext}, {'_id': 1})
-    return tps['_id']
+    if tps == None:
+        return None
+    else:
+        return tps['_id']
 
 
 def update_one_vlille():
@@ -40,7 +43,7 @@ def update_one_vlille():
     """
     DB.data_velo_lille.create_index([('station_id', 1), ('date', -1)], unique=True)
     vlille = get_vlille()
-    newdata = [
+    newdatatoclean = [
         {
             "bike_available": elem.get('fields', {}).get('nbvelosdispo'),
             "stand_available": elem.get('fields', {}).get('nbplacesdispo'),
@@ -49,6 +52,11 @@ def update_one_vlille():
         }
         for elem in vlille
     ]
+    newdata = []
+    # on nettoye les données qui ne possède pas de station id (Ainsi, les stations suupprimées le sont définitivement)
+    for info_station in newdatatoclean:
+        if info_station.get("station_id") != None:
+            newdata.append(info_station)
     # On ajoute les données jusqu'à ce qu'on obtienne une date où il n'y a pas eu de nouvelles données
     try:
         DB.data_velo_lille.insert_many(newdata, ordered=False)

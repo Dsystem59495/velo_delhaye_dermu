@@ -174,6 +174,7 @@ if __name__ == '__main__':
     update_one_vlille()
     print("\n Bienvenue dans la section administrateur \n")
     choice = 0
+
     while choice != 1 and choice != 2:
         choice = eval(input("\n Souhaitez vous rechercher une station (1) ou désactiver des stations autour d'un point défini (2) ? "))    
     

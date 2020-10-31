@@ -55,24 +55,20 @@ def recherche_données_ratio(ratio, heure_debut, heure_fin):
                 {"station_ratio": {'$lte': ratio}}
             }
     ])
-    for doc in stations_sous_ratio:
-        print(doc)
     return stations_sous_ratio
 
 def affiche_nom_stations(stations_sous_ratio):
-
     for station in stations_sous_ratio:
         infos_stations = DB.velo_lille.find_one({'_id': station.get('_id')})
-        print(infos_stations)
         if infos_stations != None:
             print(str(infos_stations.get("name")) + " ( ratio : " + str(station.get("station_ratio")) + " )")
     return None
 
 if __name__ == '__main__':
-    heure_debut = 10
-    heure_fin = 11    # Les heures de notre sauvegarde sont basées selon le méridien de Greenwich
+    heure_debut = 17
+    heure_fin = 18   # Les heures de notre sauvegarde sont basées selon le méridien de Greenwich
     ratio = 0.2
-    print("\n Affichage des stations ayant un ratio inférieur ou égal à " + str(ratio) + " entre 11h et 12h le samedi : ")
+    print("\n Affichage des stations ayant un ratio inférieur ou égal à " + str(ratio) + " entre 18h et 19h le samedi : ")
     stations_sous_ratio = recherche_données_ratio(ratio, heure_debut, heure_fin)
     affiche_nom_stations(stations_sous_ratio)
 
