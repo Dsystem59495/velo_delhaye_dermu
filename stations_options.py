@@ -28,6 +28,54 @@ def saisie_coordonnees_administrateur():
     return admin
 
 '''
+Modification, suppression ou désactivation d'une zone
+'''
+
+def update_station(liste_infos_stations, num_station):
+    num = 0
+    while num <= 0 or num > num_station :
+        num = eval(input("\n Quel est le numéro de la station que vous souhaitez sélectionner ?" ))
+    print("\n Vous avez choisi la station : ")
+    station = liste_infos_stations[num-1]
+    print(station.get('name'))
+    
+    choice = 0
+    while choice != 1 and choice != 2 and choice != 3:
+        choice = eval(input("\n Souhaitez vous modifier(1), supprimer la station(2) ou désactiver toutes les stations alentour (3) ?"))
+        
+    if choice == 1:
+        modifie_station(station)
+    elif choice == 2:
+        supprime_station(station)
+    else :
+        desactive_zone_station(station)
+        
+    
+
+'''
+Modifier la station
+'''
+
+def modifie_station(station):
+    return None
+
+'''
+Supprimer la station
+'''
+
+def supprime_station(station):
+    DB.velo_lille.delete_one({"name" : station.get("name")})
+    DB.data_velo_lille.delete_many({"id_station" : station.get('id_station')})
+    return None
+
+'''
+Désactivation de la zone autour de la station
+'''
+
+def desactive_zone_station(station):
+    return None
+
+'''
 Renvoie l'ensemble des stations dont le nom contient la saisie de l'administrateur
 '''
 
@@ -69,6 +117,8 @@ def saisie_infos_stations(listes_infos_stations):
               str(infos_stations.get('bike_available')) + " vélo(s) disponibles et "
               + str(infos_stations.get('stand_available')) + " stand(s) de disponibles le "
               + str(infos_stations.get('date').strftime('%d/%m/%Y')) + " à " + str(infos_stations.get('date').strftime('%T')) + " ).\n")
+        
+    return len(listes_infos_stations)
 
 '''
 Exécution code
@@ -80,4 +130,5 @@ if __name__ == '__main__':
     admin = saisie_coordonnees_administrateur()
     liste_station = recherche_nom_station(admin)
     liste_infos_stations = infos_stations_nom(liste_station)
-    saisie_infos_stations(liste_infos_stations)
+    num_station = saisie_infos_stations(liste_infos_stations)
+    update_station(liste_infos_stations, num_station)
