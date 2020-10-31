@@ -28,27 +28,24 @@ def saisie_coordonnees_administrateur():
     return admin
 
 '''
-Modification, suppression ou désactivation d'une zone
+Modification ou suppression d'une station
 '''
 
 def update_station(liste_infos_stations, num_station):
     num = 0
     while num <= 0 or num > num_station :
-        num = eval(input("\n Quel est le numéro de la station que vous souhaitez sélectionner ?" ))
+        num = eval(input("\n Quel est le numéro de la station que vous souhaitez sélectionner ? "))
     print("\n Vous avez choisi la station : ")
     station = liste_infos_stations[num-1]
     print(station.get('name'))
     
     choice = 0
-    while choice != 1 and choice != 2 and choice != 3:
-        choice = eval(input("\n Souhaitez vous modifier(1), supprimer la station(2) ou désactiver toutes les stations alentour (3) ?"))
-        
+    while choice != 1 and choice != 2:
+        choice = eval(input("\n Souhaitez-vous modifier (1) ou supprimer la station sélectionnée (2) ? "))    
     if choice == 1:
         modifie_station(station)
-    elif choice == 2:
+    else:
         supprime_station(station)
-    else :
-        desactive_zone_station(station)
         
     
 
@@ -70,10 +67,56 @@ def supprime_station(station):
     return None
 
 '''
+Saisie des coordonnées pour la désactivation
+'''
+
+def saisie_coordonnees_desactivation():
+    print("\n Veuillez saisir vos coordonnées :")
+    while True:
+        try:
+            longitude = float(input("Saissisez la longitude (Ouest-Est) : "))
+            break
+        except ValueError:
+            print("Erreur de saisie : Veuillez recommencer la saisie de la longitude (Ouest-Est). ")
+    while True:
+        try:
+            latitude = float(input("Saissisez la latitude (Nord-Sud) : "))
+            break
+        except ValueError:
+            print("Erreur de saisie : Veuillez recommencer la saisie de la latitude (Nord-Sud). ")
+    while True:
+        try:
+            distance_max = float(input("Saissisez le rayon maximal pour la désactivation en mètres : "))
+            break
+        except ValueError:
+            print("Erreur de saisie : Veuillez recommencer la saisie de la distance. ")
+    
+    return longitude, latitude, distance_max
+
+
+'''
 Désactivation de la zone autour de la station
 '''
 
-def desactive_zone_station(station):
+def desactive_zone_station():
+    longitude, latitude, distance_max = saisie_coordonnees_desactivation()
+    
+    DB.velo_lille.create_index([('geometry', '2dsphere')])
+    
+    liste_station = DB.velo_lille.aggregate([
+        {"$geoNear": {
+            "near": {
+                "type": "Point",
+                "coordinates": [longitude, latitude]
+            },
+            "maxDistance": distance_max,
+            "spherical": True,
+            "distanceField": "distance"
+        }}
+    ])
+    
+    for i in liste_station :
+        DB.velo_lille.update_many({"_id" : i.get('_id')}, {"$set": {"etat": False}})
     return None
 
 '''
@@ -129,8 +172,16 @@ Exécution code
 if __name__ == '__main__':
     print("\n Mise à jour des données \n")
     update_one_vlille()
-    admin = saisie_coordonnees_administrateur()
-    liste_station = recherche_nom_station(admin)
-    liste_infos_stations = infos_stations_nom(liste_station)
-    num_station = saisie_infos_stations(liste_infos_stations)
-    update_station(liste_infos_stations, num_station)
+    print("\n Bienvenue dans la section administrateur \n")
+    choice = 0
+    while choice != 1 and choice != 2:
+        choice = eval(input("\n Souhaitez vous rechercher une station (1) ou désactiver des stations autour d'un point défini (2) ? "))    
+    
+    if choice == 2:
+        desactive_zone_station()
+    else :
+        admin = saisie_coordonnees_administrateur()
+        liste_station = recherche_nom_station(admin)
+        liste_infos_stations = infos_stations_nom(liste_station)
+        num_station = saisie_infos_stations(liste_infos_stations)
+        update_station(liste_infos_stations, num_station)

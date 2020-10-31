@@ -297,8 +297,8 @@ Chargement des différentes données utilisées au cours du projet dans MongoDB 
 
 if __name__ == '__main__':
     vlille_insert(velo_lille)
-    #vrennes_insert(velo_rennes)
-    #vparis_insert(velo_paris)
-    #vlyon_insert(velo_lyon)
+    vrennes_insert(velo_rennes)
+    vparis_insert(velo_paris)
+    vlyon_insert(velo_lyon)
     print("ALL IMPORTATION DONE")
 
