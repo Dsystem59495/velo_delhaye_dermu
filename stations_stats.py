@@ -67,10 +67,10 @@ def affiche_nom_stations(stations_sous_ratio):
 if __name__ == '__main__':
     jour_debut = 0 # Correspond à Lundi
     jour_fin = 6 # Correspond à Vendredi
-    heure_debut = 17
-    heure_fin = 18         # Les heures de notre sauvegarde sont basées selon le méridien de Greenwich
+    heure_debut = 12
+    heure_fin = 13         # Les heures de notre sauvegarde sont basées selon le méridien de Greenwich
     ratio = 0.2
-    print("\n Affichage des stations ayant un ratio inférieur ou égal à " + str(ratio) + " entre 18h et 19h en semaine "
+    print("\n Affichage des stations ayant un ratio inférieur ou égal à " + str(ratio) + " entre 13h et 14h en semaine "
                                                                                         "(entre lundi et vendredi) : ")
     stations_sous_ratio = recherche_données_ratio(ratio, jour_debut, heure_debut,  jour_fin, heure_fin)
     affiche_nom_stations(stations_sous_ratio)

@@ -71,7 +71,8 @@ def vlille_insert(data):
                 'dataset': 'Lille',
                 'id_ext': elem.get('fields', {}).get('libelle')
             },
-            'tpe': elem.get('fields', {}).get('type', '') == 'AVEC TPE'
+            'tpe': elem.get('fields', {}).get('type', '') == 'AVEC TPE',
+            'etat': elem.get('fields', {}).get('etat', '') == 'EN SERVICE'
         }
         for elem in data
     ]
@@ -296,8 +297,8 @@ Chargement des différentes données utilisées au cours du projet dans MongoDB 
 
 if __name__ == '__main__':
     vlille_insert(velo_lille)
-    vrennes_insert(velo_rennes)
-    vparis_insert(velo_paris)
-    vlyon_insert(velo_lyon)
+    #vrennes_insert(velo_rennes)
+    #vparis_insert(velo_paris)
+    #vlyon_insert(velo_lyon)
     print("ALL IMPORTATION DONE")
 

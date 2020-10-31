@@ -110,15 +110,20 @@ Renvoie l'ensemble des informations d'une station dont le nom contient la saisie
 
 def saisie_infos_stations(listes_infos_stations):
     print("\n Voici les stations contenant votre saisie : \n")
-
     for i in range(len(listes_infos_stations)):
         infos_stations = DB.data_velo_lille.find_one({'station_id': listes_infos_stations[i].get('station_id')})
         print(str(i + 1) + " : " + listes_infos_stations[i].get('name') + " ( "+
               str(infos_stations.get('bike_available')) + " vélo(s) disponibles et "
               + str(infos_stations.get('stand_available')) + " stand(s) de disponibles le "
+<<<<<<< Updated upstream
               + str(infos_stations.get('date').strftime('%d/%m/%Y')) + " à " + str(infos_stations.get('date').strftime('%T')) + " ).\n")
         
     return len(listes_infos_stations)
+=======
+              + str(infos_stations.get('date').strftime('%d/%m/%Y')) + " à "
+              + str(int(infos_stations.get('date').strftime('%H'))+1)
+              + infos_stations.get('date').strftime(':%M:%S'))
+>>>>>>> Stashed changes
 
 '''
 Exécution code
